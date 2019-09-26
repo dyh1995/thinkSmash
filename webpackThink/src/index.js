@@ -1,4 +1,5 @@
-import fnaname from './fna.js';
+import fna from './fna.js';
 // var fnaname = require('./fna.js');
 // var fnaname = import('./fna.js');
-console.log('Hello World!'+fnaname.name);
+// console.log('Hello World!'+fnaname.name);
+console.log('Hello World!'+fna.name);

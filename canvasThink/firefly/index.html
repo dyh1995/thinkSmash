@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>canvas动效--萤火虫</title>
+    <link rel="stylesheet" href="./index.css">
+  </head>
+
+  <body>
+      <div class="container">
+          <canvas class="canvas_firefly"></canvas>
+      </div>
+  </body>
+
+  <script>
+      // 渲染器
+    const RENDERER = {
+        FIREFLY_COUNT: 80, // 萤火虫数量
+        SKY_COLOR: 'rgba(255,255,255,0)', // canvas背景颜色
+        RIVER_RATE: 0.2, // 控制萤火虫位于canvas底部RIVER_RATE范围内不显示
+
+        init: function (ele) {
+            this.setParameters(ele);
+            this.createElements();
+            this.render();
+        },
+
+        /**
+        * 设置canvas参数
+        * @param {*} ele
+        */
+        setParameters: function (ele) {
+            this.container = document.querySelector(ele);
+            this.width = this.container.clientWidth;
+            this.height = this.container.clientHeight;
+            this.context = this.container.getContext('2d');
+            this.flowX = 0;
+            this.theta = 0; // θ角，范围θ∈[0,2Π]，用于控制透明度opacity的数值
+            this.fireflies = []; // 萤火虫集合
+        },
+
+        /**
+        * 创建所有萤火虫
+        */
+        createElements: function () {
+            for (var i = 0, length = this.FIREFLY_COUNT; i < length; i++) {
+                this.fireflies.push(
+                    new FIREFLY(this.width, this.height, this.RIVER_RATE)
+                );
+            }
+        },
+
+        /**
+        * 获取范围内的随机数
+        * @param {*} range
+        */
+        getRandomValue: function (range) {
+            return range.min + (range.max - range.min) * Math.random();
+        },
+
+        /**
+        * 渲染
+        */
+        render: function () {
+            this.context.clearRect(0, 0, this.width, this.height); // 清楚画布，去掉之前的轨迹
+            requestAnimationFrame(() => {
+                // requestAnimationFrame会改变this指向，使用箭头函数或bind方法处理此问题，this.render = this.render.bind(this);
+                this.render();
+            });
+
+            for (var j = 0, jlength = this.fireflies.length; j < jlength; j++) {
+                this.fireflies[j].render(this.context);
+            }
+        }
+    };
+
+    // 萤火虫类
+    var FIREFLY = function (width, height, riverRate) {
+        this.width = width;
+        this.height = height;
+        this.riverRate = riverRate;
+        this.init();
+    };
+    // 萤火虫原型
+    FIREFLY.prototype = {
+        RANGE_MARGIN: 10,
+        VELOCITY: 0.8, // 飘移速度
+        LUMINOUS_FREQUENCY_RANGE: { min: Math.PI / 500, max: Math.PI / 100 }, // θ角的随机增量，范围LUMINOUS_FREQUENCY_RANGE ∈ [π/500,Π/100]
+        COLOR: 'rgba(255,255,255,%opacity)', // 萤火虫颜色，透明度
+        RADIUS_RANGE: { min: 0.5, max: 2 }, // 萤火虫半径大小范围
+        ACCELARATION_RANGE: { min: -Math.PI / 300, max: Math.PI / 300 }, // 加速度
+
+        /**
+        * 初始化一个萤火虫
+        */
+        init: function () {
+            this.radius = RENDERER.getRandomValue(this.RADIUS_RANGE); // 选取一个萤火虫半径大小
+            this.bottomLimit = this.height * (1 - this.riverRate);
+            this.x = this.width * Math.random(); // 随机起始x坐标
+            this.y = this.bottomLimit * Math.random(); // 随机起始y坐标
+            this.velocityRate =
+                this.VELOCITY * Math.pow(this.radius / this.RADIUS_RANGE.max, 3); // 基本飘移速度
+            this.phi = Math.PI * 2 * Math.random(); // phi ∈ [0,2Π]
+            this.vx = Math.cos(this.phi) * this.velocityRate; // x方向加速度,可正可负
+            this.vy = Math.sin(this.phi) * this.velocityRate; // y方向加速度,可正可负
+            this.accelaration = RENDERER.getRandomValue(this.ACCELARATION_RANGE);
+            this.frequency = RENDERER.getRandomValue(this.LUMINOUS_FREQUENCY_RANGE);
+            this.theta = Math.PI * 2 * Math.random();
+            this.opacity = 0.5 + 0.3 * Math.sin(this.theta); // 透明度opacity ∈ [0.2,0.8]
+        },
+
+        /**
+        * 绘制一个萤火虫
+        * @param {*} context
+        */
+        render: function (context) {
+            context.fillStyle = this.COLOR.replace('%opacity', this.opacity);
+            context.beginPath();
+            context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+            context.fill();
+
+            this.x += this.vx;
+            this.y += this.vy;
+
+            if (
+                this.x < -this.RANGE_MARGIN ||
+                this.x > this.width + this.RANGE_MARGIN ||
+                this.y < -this.RANGE_MARGIN ||
+                this.y > this.bottomLimit
+            ) {
+                this.x = RENDERER.getRandomValue({ min: 0, max: this.width });
+                this.y = RENDERER.getRandomValue({
+                    min: 0,
+                    max: this.bottomLimit
+                });
+                this.theta = 0;
+            }
+            this.theta += this.frequency;
+            this.opacity = 0.5 - 0.5 * Math.cos(this.theta);
+
+            if (this.theta > Math.PI * 2) {
+                // θ角大于2Π时，重新随机获取θ角和加速度
+                this.accelaration = RENDERER.getRandomValue(
+                    this.ACCELARATION_RANGE
+                );
+                this.theta %= Math.PI * 2;
+            }
+            this.phi += this.accelaration;
+            this.phi %= Math.PI * 2;
+            this.vx = Math.cos(this.phi) * this.velocityRate;
+            this.vy = Math.sin(this.phi) * this.velocityRate;
+        }
+        // toIlluminate: function () {
+        //     return this.radius >= this.RADIUS_LIMIT;
+        // }
+    };
+
+    window.requestAnimationFrame = (function () {
+        return (
+            window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            function (callback) {
+                window.setTimeout(callback, 1000 / 60);
+            }
+        );
+    })();
+
+    RENDERER.init('#canvas_firefly');
+
+  </script>
+</html>
