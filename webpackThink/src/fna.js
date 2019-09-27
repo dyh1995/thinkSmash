@@ -1,5 +1,8 @@
 // import fnb from './fnb';
-export default {
+// export default {
+//     name: 'aModule'
+//     // name: 'aModule'+fnb.name
+// };
+exports = {
     name: 'aModule'
-    // name: 'aModule'+fnb.name
-};
+}

@@ -1,5 +1,5 @@
-import fna from './fna';
+// import fna from './fna';
 export default {
-    // name: 'bModule'
-    name: 'bModule'+fna.name
+    name: 'bModule'
+    // name: 'bModule'+fna.name
 };
