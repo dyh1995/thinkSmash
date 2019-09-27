@@ -165,6 +165,7 @@ webpackJsonp([0],[
 4. 挂载到window下面的webpackJsonp函数是动态加载模块代码下载后的回调，它会通知webpack模块下载完成并将模块加入到modules当中。
 5. 加载成功则调用resolve，失败则调用reject。resolve后不会传入模块本身，而是通过__webpack_require__来加载模块内容，require的模块id由webpack来生成
 6. bundle内的parentJsonpFunction作用：使异步加载的模块在多个不同的bundle内同步。
+7. __webpack_require__.n 主要处理commonjs规范和es_module规范模块之间引用是差异兼容问题
 
 #### 参考文章
 [简要分析webpack打包后代码](https://segmentfault.com/a/1190000006814420 "简要分析webpack打包后代码")
