@@ -171,3 +171,22 @@ webpackJsonp([0],[
 [简要分析webpack打包后代码](https://segmentfault.com/a/1190000006814420 "简要分析webpack打包后代码")
 [webpack启动代码源码解读](https://segmentfault.com/a/1190000016524677 "webpack启动代码源码解读")
 [webpack模块化原理-ES module](https://segmentfault.com/a/1190000010955254 "webpack模块化原理-ES module")
+
+### tapable内部钩子
+
+Sync 同步类型的钩子（通过 tap 注册的事件，通过 call 触发）
+1. SyncHook 为串行同步执行，不关心事件处理函数的返回值，在触发事件之后，会按照事件注册的先后顺序执行所有的事件处理函数。
+2. SyncBailHook 同样为串行同步执行，如果事件处理函数执行时有一个返回值不为空（即返回值为 undefined），则跳过剩下未执行的事件处理函数（如类的名字，意义在于保险）。
+3. SyncWaterfallHook 为串行同步执行，上一个事件处理函数的返回值作为参数传递给下一个事件处理函数，依次类推，正因如此，只有第一个事件处理函数的参数可以通过 call 传递，而 call 的返回值为最后一个事件处理函数的返回值。
+4. SyncLoopHook 为串行同步执行，事件处理函数返回 true 表示继续循环，即循环执行当前事件处理函数，返回 undefined 表示结束循环，SyncLoopHook 与 SyncBailHook 的循环不同，SyncBailHook 只决定是否继续向下执行后面的事件处理函数，而 SyncLoopHook 的循环是指循环执行每一个事件处理函数，直到返回 undefined 为止，才会继续向下执行其他事件处理函数，执行机制同理。
+
+Async 异步类型的钩子
+Async 类型可以使用 tap、tapAsync 和 tapPromise 注册不同类型的插件 “钩子”，分别通过 call、callAsync 和 promise 方法调用
+1. AsyncParallelHook 为异步并行执行
+2. AsyncSeriesHook 为异步串行执行
+
+在 tapable 源码中，注册事件的方法 tab、tapSync、tapPromise 和触发事件的方法 call、callAsync、promise 都是通过 compile 方法快速编译出来的
+在 Webpack 中，这些 “钩子” 的真正作用就是将通过配置文件读取的插件与插件、加载器与加载器之间进行连接，“并行” 或 “串行” 执行
+
+#### 参考文章
+[Webpack 核心模块 tapable 解析](https://www.jianshu.com/p/273e1c9904d2 "Webpack 核心模块 tapable 解析")
