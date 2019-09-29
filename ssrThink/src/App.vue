@@ -1,6 +1,6 @@
 <!-- App.vue -->
 <template>
-      <div>
+      <div id="homepage">
             <h2>欢迎来到SSR渲染页面</h2>
             <router-link to="/home">home</router-link>
             <router-link to="/animal">animal</router-link>

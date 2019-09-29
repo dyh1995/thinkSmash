@@ -20,7 +20,7 @@ export default context => {
                 return component.serverRequest(app.$store)
             }
         })).then(() => {
-            context.state = app.$store.state
+            context.state = app.$store.state;   //上下文中添加state对象，
             resolve(app)
         }).catch(reject)
     })
