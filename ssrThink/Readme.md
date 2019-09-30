@@ -43,3 +43,7 @@ $ npm i vue-server-renderer
 1. 客户端发起请求到server获取死数据静态页面
 2. 拆分client和server，客户端实现spa，切换路由时不再发起请求
 3. server写死数据改为store获取，通过window.__INITIAL_STATE__ 属性传递server端的store到client。
+
+### 缓存
+可以利用名为 micro-caching 的缓存策略，来大幅度提高应用程序处理高流量的能力
+
