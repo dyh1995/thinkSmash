@@ -31,3 +31,44 @@ getStyle(obj, attr) {
         return document.defaultView.getComputedStyle(obj, null)[attr].replace('px', '');
     }
 }
+
+/**
+ * 函数式编程
+ * eg：把数组cars每一个元素的make属性单独拿出来，组成一个新数组
+ */
+var cars = [{make: 64},{make: 23},{make: 51},{make: 40}];
+// 原始的命令式，产生了外部变量makes
+var makes = [];
+for (var i = 0; i < cars.length; i++) {
+  makes.push(cars[i].make * 10);
+}
+// 优雅的声明式，map不改变原数组
+var makes = cars.map(function(car){ return car.make * 10; });
+
+//函数组合
+//1. 不优雅的嵌套式
+var toUpperCase = function(x) { return x.toUpperCase(); };
+var exclaim = function(x) { return x + '!'; };
+var shout = function(x){
+  return exclaim(toUpperCase(x));   //函数由内向外执行了
+};
+shout("send in the clowns");
+//=> "SEND IN THE CLOWNS!"
+
+//2. 优雅的合成式
+//定义compose
+//es5
+var compose = function(...args) {
+    return function(x) {
+        return args.reduceRight(function(value, item){
+            return item(value)
+        }, x);
+    }
+};
+//es6
+// var compose = (...args) => x => args.reduceRight((value, item) => item(value), x);
+var toUpperCase = function(x) { return x.toUpperCase(); };
+var exclaim = function(x) { return x + '!'; };
+var shout = compose(exclaim, toUpperCase);  //组合函数
+shout("send in the clowns");
+//=> "SEND IN THE CLOWNS!"
