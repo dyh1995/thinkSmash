@@ -72,3 +72,17 @@ var exclaim = function(x) { return x + '!'; };
 var shout = compose(exclaim, toUpperCase);  //组合函数
 shout("send in the clowns");
 //=> "SEND IN THE CLOWNS!"
+
+/**
+ * let	var	const区别
+ */
+/*
+                let             var             const
+    变量or常量	变量	         变量	         常量
+    作用域	    块级作用域	     函数作用域	      块级作用域
+    创建	    作用域顶部创建	 作用域顶部创建	   作用域顶部创建
+    初始化	    let语句	        作用域顶部	      const语句
+    赋值	    可以赋值	    可以赋值	      报错
+    重复声明	报错	        可以重复声明	  报错
+    暂时性死区	有	            没有	          有
+*/
