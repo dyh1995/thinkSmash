@@ -74,7 +74,7 @@ shout("send in the clowns");
 //=> "SEND IN THE CLOWNS!"
 
 /**
- * let	var	const区别 
+ * let	var	const区别
  */
 /*
                 let             var             const
