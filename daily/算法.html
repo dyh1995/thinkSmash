@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<!-- saved from url=(0032)http://live.xunlei.com/test.html -->
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title></title>
+</head>
+
+<body class="act25">
+    <script>
+        window.onload = function () {
+            var algorithm = {
+                //岛屿问题
+                isLands: {
+                    grid: [
+                        [1, 1, 1, 1, 0],
+                        [1, 1, 0, 0, 0],
+                        [0, 0, 1, 0, 1],
+                        [0, 0, 1, 1, 1],
+                        [0, 0, 1, 0, 1],
+                    ],
+
+                    isLandsNum(grid) {
+                        var count = 0;
+                        var xlength = grid[0].length;
+
+                        for (var i = 0, len = grid.length; i < len; i++) {
+                            for (var j = 0; j < xlength; j++) {
+                                if (grid[i][j] == 1) {
+                                    count++;
+                                    this.searchIslands(grid, i, j);
+                                }
+                            }
+                        }
+
+                        return count;
+                    },
+
+                    searchIslands(grid, i, j) {
+                        if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length) {
+                            return;
+                        }
+
+                        if (grid[i][j] == 1) {
+                            grid[i][j] = 0;
+
+                            this.searchIslands(grid, i, j - 1);  //左
+                            this.searchIslands(grid, i, j + 1);  //右
+                            this.searchIslands(grid, i - 1, j);  //上
+                            this.searchIslands(grid, i + 1, j);  //下
+                        }
+                    },
+
+                    init() {
+                        console.log(this)
+                        var html = '';
+                        for (var i = 0, len = this.grid.length; i < len; i++) {
+                            for (var j = 0, len1 = this.grid[0].length; j < len1; j++) {
+                                html += this.grid[i][j] + '  ';
+                            }
+                            html += '\n';
+                        }
+                        console.log(html);
+
+                        console.log('count=' + this.isLandsNum(this.grid))
+                    }
+                },
+
+                //回文数
+                palindromeNum: {
+                    palindrome: 212565211,
+
+                    /**
+                     * 首尾比较
+                     */
+                    judge(num) {
+                        if (num < 0) {
+                            return false;
+                        }
+
+                        var mask = Math.pow(10, num.toString().length - 1)
+
+                        while (num != 0) {
+                            var high = Math.floor(num / mask);
+                            var low = num % 10;
+                            if (high != low) {
+                                return false;
+                            } else {
+                                num %= mask;    //去掉高位
+                                num = Math.floor(num / 10);      //去掉低位
+                                mask /= 100;
+                            }
+                        }
+
+                        return true;
+                    },
+
+                    /**
+                     * 反转比较
+                     */
+                    judgeTwo(num) {
+                        var str1 = num.toString();
+                        var str2 = str1.split("").reverse().join("");
+
+                        return str1 == str2;
+                    },
+
+                    /**
+                     * 输出一个回文数及其所有子回文数 
+                     */
+                    innerPalindrome(num) {
+                        num = num.toString();
+                        var len = num.length, testLen = 2, result = [];
+
+                        while (testLen <= len) {
+                            for (var start = 0; start < len - testLen + 1; start++) {
+                                str1 = num.substr(start, testLen);
+                                if (this.judgeTwo(str1)) {
+                                    result.push(str1);
+                                }
+                            }
+                            testLen++;
+                        }
+
+                        return result;
+                    },
+
+                    init() {
+                        // console.log(`${this.palindrome} ${this.judge(this.palindrome) ? 'is' : 'not is'} a palindromeNum`);
+                        // console.log(`${this.palindrome} ${this.judgeTwo(this.palindrome) ? 'is' : 'not is'} a palindromeNum`);
+                        console.log(this.palindrome + '及其所有子回文数为：\n' + this.innerPalindrome(this.palindrome));
+                    }
+                },
+
+                sort: {
+                    arr: [113, 50, 12, 5, 56, 46, 26, 37, 41],
+
+                    babbleSort(arr) {
+                        //平均时间复杂度	最好情况	最坏情况	空间复杂度
+                        // O(n2)	O(n)	O(n2)	O(1)
+                        var temp;
+                        for (var i = 0, len = arr.length; i < len; i++) {
+                            for (var j = 0; j < len - 1 - i; j++) {
+                                arr[j] > arr[j + 1] && this.swap(j, j + 1, arr);
+                            }
+                        }
+
+                        return arr;
+                    },
+
+                    bothwayBubbleSort(array) {
+                        var tail = array.length - 1,
+                            i;
+
+                        for (i = 0; i < tail; tail--) {
+                            for (var j = tail; j > i; j--) {
+                                //第一轮, 先将最小的数据冒泡到前面
+                                array[j - 1] > array[j] && this.swap(j, j - 1, array);
+                            }
+
+                            i++;
+
+                            for (j = i; j < tail; j++) {
+                                //第二轮, 将最大的数据冒泡到后面
+                                array[j] > array[j + 1] && this.swap(j, j + 1, array);
+                            }
+                        }
+                        return array;
+                    },
+
+                    selectSort(array) {
+                        //平均时间复杂度	最好情况	最坏情况	空间复杂度
+                        // O(n2)	O(n2)	O(n2)	O(1)
+                        var length = array.length, min;
+
+                        for (var i = 0; i < length - 1; i++) {
+                            min = i;
+                            for (var j = i + 1; j < length; j++) {
+                                array[j] < array[min] && (min = j); //记住最小数的下标
+                            }
+                            min != i && this.swap(i, min, array);
+                        }
+                        return array;
+                    },
+
+                    insertSort(array) {
+                        var length = array.length, current;
+
+                        for (var i = 1; i < length; i++) {
+                            current = array[i];
+                            var j = i - 1;
+                            console.log('current' + current)
+                            while (j >= 0 && array[j] > current) {
+                                console.log(array)
+                                array[j + 1] = array[j];
+                                console.log(array)
+                                j--;
+                            }
+                            if (j != i) {
+                                array[j + 1] = current;
+                            }
+                            console.log('sw--' + array)
+                        }
+                        return array;
+                    },
+
+                    swap(i, j, array) {
+                        var temp = array[j];
+                        array[j] = array[i];
+                        array[i] = temp;
+                    },
+
+                    init() {
+                        console.log(this.insertSort(this.arr));
+                    }
+                },
+
+                arrMove: {
+                    arr: [1, 2, 3, 4, 5, 6],
+                    //左移1位
+                    //[2,3,4,5,6,1]
+                    //左移2位
+                    //[3,4,5,6,1,2]
+                    /**
+                     * @param arr 需要移动的数组
+                     * @param to  移动方向 -1:左移 1:右移
+                     * @param len 移动长度
+                     */
+                    move(arr, to, n) {
+                        n = n % arr.length;
+                        n *= to;
+                        console.log(arr.slice(n).concat(arr.slice(0, n)))
+                        return arr.slice(n).concat(arr.slice(0, n));
+                    },
+
+                    init() {
+                        this.move(this.arr, -1, 9);
+                    }
+                },
+
+                repeatStr: {
+                    str: '* ',
+
+                    repeat(str, n) {
+                        if (n === 0) return '';
+                        if (n === 1) return str;
+
+                        if (n % 2) {
+                            // `n` 为奇数
+                            return str + this.repeat(str, n - 1);
+                        } else {
+                            // `n` 为偶数，
+                            // 但是要把 `repeat(str, n >>> 1)` 缓存起来，
+                            // 以避免重复两次计算
+                            var result = (str = this.repeat(str, n >>> 1)) + str;
+                            return result
+                        }
+                    },
+
+                    init() {
+                        console.log(this.repeat(this.str, 8))
+                    }
+                },
+
+                //返回字符串中首个非重复字符的位置
+                firstNoRepeatChat: {
+                    find(str) {
+                        var map = [];
+
+                        for (var i = 0, len = str.length; i < len; i++) {
+                            if (map[str[i]]) {
+                                map[str[i]].count++;
+                            } else {
+                                map[str[i]] = { count: 1, index: i };
+                            }
+                        }
+
+                        for (var key in map) {
+                            if (map[key].count == 1) {
+                                console.log(map[key].index)
+                                return map[key].index;
+                            }
+                        }
+                    },
+
+                    init() {
+                        this.find('loveleetcode');
+                    }
+                },
+
+                //查找字符串数组中的最长公共前缀
+                longestCommonPrefix: {
+                    solution(strArr) {
+                        let i = 0;
+                        let str = strArr[0];
+
+                        while (i < str.length) {
+                            for (var j = 0, len = strArr.length; j < len; j++) {
+                                if (strArr[j].length === i - 1 || strArr[j][i] !== str[i]) {
+                                    return str.substring(0, i);
+                                }
+                            }
+                            i++;
+                        }
+                    },
+
+                    init() {
+                        console.log(this.solution(['adc12', 'adc1f2e', 'adc1pe']))
+                    }
+                },
+
+                //给定一个非负整数num，对于任意i，0 ≤ i ≤ num，计算i的值对应的二进制数中“1” 的个数，将这些结果返回为一个数组。
+                countBits: {
+                    //countBit(n & (n - 1)) === countBit(n) - 1
+                    // => countBit(n & (n - 1)) + 1 === countBit(n)
+                    countBits(nums) {
+                        var ret = [0];
+                        for (var i = 1; i <= nums; i++) {
+                            ret.push(ret[i & i - 1] + 1);
+                        }
+                        return ret;
+                    },
+
+                    init() {
+                        console.log(this.countBits(5))
+                    }
+                },
+
+                //字母异位词
+                isAnagram: {
+                    solution(str1, str2){
+                        if(str1.length != str2.length){
+                            return false;
+                        }
+
+                        str1 = str1 && str1.split('').sort();
+                        str2 = str2 && str2.split('').sort();
+
+                        for(var i = 0, len = str1.length; i < len; i++){
+                            if(str1[i] != str2[i]){
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    },
+
+                    init(){
+                        console.log(this.solution('anagram', 'nagaram'));
+                    }
+                },
+
+                //阶乘
+                firstFactorial: {
+                    solution(num){
+                        if(num === 1 || num === 0){
+                            return num * this.solution(num - 1);
+                        }else{
+                            return 1
+                        }
+
+                        return num;
+                    },
+
+                    init(){
+                        console.log(this.solution(5))
+                    }
+                },
+
+                //6174问题
+                KaprekarsConstant: {
+                    calculateTimes: 0,
+                    
+                    solution(num){
+                        num = num.toString();
+
+                        var acs = num.split('').sort().join('');
+                        var desc = num.split('').sort((a, b)=>{return b - a;}).join('');
+
+                        this.calculateTimes++;
+                        
+                        console.log('num: ' + num);
+                        console.log('desc: ' + desc);
+                        console.log('acs: ' + acs);
+                        console.log('desc - acs: ' + (parseInt(desc) - parseInt(acs)));
+                        console.log('\n');
+
+                        if((parseInt(desc) - parseInt(acs)) == 6174){
+                            return this.calculateTimes;
+                        }else{
+                            this.solution(desc - acs);
+                        }
+
+                        return this.calculateTimes;
+                    },
+                    
+                    init(){
+                        console.log(this.solution(3525));
+                    }
+                },
+
+                runtime(fn, ctx) {
+                    var start = new Date().getTime();
+                    fn && fn.apply(ctx);
+                    var end = new Date().getTime();
+
+                    return end - start;
+                },
+
+                init() {
+                    this.runtime(this.KaprekarsConstant.init, algorithm.KaprekarsConstant);
+                }
+            };
+
+            algorithm.init();
+        }
+    </script>
+</body>
+
+</html>

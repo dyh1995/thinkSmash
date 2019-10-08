@@ -86,3 +86,37 @@ shout("send in the clowns");
     重复声明	报错	        可以重复声明	  报错
     暂时性死区	有	            没有	          有
 */
+
+/**
+ * click时间连点延迟触发
+ */
+var timeout = null;      //搜索触发定时器
+var clickTimes = 0;      //存储连续输入次数
+var waitTime = 500;      //500ms内连续输入不进行搜索，减少请求次数
+function click(){
+    if(this.key == ''){
+	    return false;
+    }
+
+	if (this.clickTimes == 0) {
+		this.timeout = setTimeout(() => {
+			//trigger();
+		}, this.waitTime);
+	} else {
+		clearTimeout(this.timeout);
+		this.timeout = setTimeout(() => {
+			//trigger();
+		}, this.waitTime);
+	}
+	this.clickTimes++;
+}
+
+/**
+ * 移动端点击输入框弹出键盘时，键盘会遮挡输入框
+ * 解决方法，添加点击事件如下
+ */
+function scrollView(e) {
+    try {
+    e.scrollIntoView();
+    } catch (err) {}
+}
