@@ -28,6 +28,9 @@ ol, ul {
   color: #fff;
 }
 
+.square.hight_light {
+  color: rgb(248, 114, 80);
+}
 .square {
   background: #fff;
   border: 1px solid #999;
@@ -58,4 +61,10 @@ ol, ul {
 
 .game-info {
   margin-left: 20px;
+}
+.game-info ol li.cur {
+  font-weight: bolder;
+}
+.game-info ol li.cur button {
+  font-weight: bolder;
 }

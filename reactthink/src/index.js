@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Board from './jsx/Board';
-
+let winnerData = Array(3).fill(null);
 class Game extends React.Component {
     constructor(props){
         super(props);
@@ -47,12 +47,12 @@ class Game extends React.Component {
         const current = history[this.state.stepNumber];
         const winner = this.calculateWinner(current.squares);
 
-        const moves = history.map((step, move) => {
+        const moves = history.map((_step, move) => {
             const desc = move ?
               'Go to move #' + move :
               'Go to game start';
             return (
-              <li key={move}>
+              <li key={move} className={move === this.state.stepNumber ? 'cur' : ''}>
                 <button onClick={() => this.jumpTo(move)}>{desc}</button>
               </li>
             );
@@ -62,7 +62,11 @@ class Game extends React.Component {
         if(winner){
             status = 'Winner is ' + winner;
         }else{
-            status = `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
+            if(this.state.stepNumber === 9){
+                status = '平局';
+            }else{
+                status = `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
+            }
         }
 
         return (
@@ -71,6 +75,7 @@ class Game extends React.Component {
                     <Board 
                         squares={current.squares}
                         onClick={(i) => this.handleClick(i)}
+                        winnerData={winnerData}
                     />
                 </div>
 
@@ -97,9 +102,11 @@ class Game extends React.Component {
         for (let i = 0; i < lines.length; i++) {
           const [a, b, c] = lines[i];
           if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            winnerData = [a, b, c];
             return squares[a];
           }
         }
+
         return null;
     }
 }
