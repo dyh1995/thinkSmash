@@ -1,29 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import * as serviceWorker from './serviceWorker';
+import Board from './jsx/Board';
 
-function Square(props) {
-    return (
-        <button className="square" onClick={props.onClick}>
-            {props.value}
-        </button>
-    );
-}
-  
-//棋盘
-class Board extends React.Component {
+class Game extends React.Component {
     constructor(props){
         super(props);
-        //在JavaScript class 中，每次你定义其子类的构造函数时，都需要调用 super 方法。因此，在所有含有构造函数的React组件中，构造函数必须以 super(props) 开头。
         this.state = {
-            squares: Array(9).fill(null),
+            history: [{
+                    squares: Array(9).fill(null),
+            }],
+            stepNumber: 0,
             xIsNext: true,
-        };
+        }
     }
 
     handleClick(i){
-        const squares = this.state.squares.slice();
+        const history = this.state.history.slice(0, this.state.stepNumber + 1);
+        const current = history[history.length - 1];
+        const squares = current.squares.slice();
         if(this.calculateWinner(squares) || squares[i]){
             return false;
             //当有玩家胜出时，或者某个 Square 已经被填充时，该函数不做任何处理直接返回。
@@ -32,22 +27,37 @@ class Board extends React.Component {
         //我们调用了 .slice() 方法创建了 squares 数组的一个副本，而不是直接在现有的数组上进行修改
         squares[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
-            squares: squares,
+            history: history.concat([{
+                squares: squares,
+            }]),
+            stepNumber: history.length,
             xIsNext: !this.state.xIsNext,
         });
     }
 
-    renderSquare(i) {
-        return (
-            <Square 
-                value={this.state.squares[i]}
-                onClick={() => this.handleClick(i)}
-            />
-        );
+    jumpTo(step){
+        this.setState({
+            stepNumber: step,
+            xIsNext: (step % 2) === 0,
+        });
     }
 
     render() {
-        const winner = this.calculateWinner(this.state.squares);
+        const history = this.state.history;
+        const current = history[this.state.stepNumber];
+        const winner = this.calculateWinner(current.squares);
+
+        const moves = history.map((step, move) => {
+            const desc = move ?
+              'Go to move #' + move :
+              'Go to game start';
+            return (
+              <li key={move}>
+                <button onClick={() => this.jumpTo(move)}>{desc}</button>
+              </li>
+            );
+        });
+
         let status;
         if(winner){
             status = 'Winner is ' + winner;
@@ -56,22 +66,18 @@ class Board extends React.Component {
         }
 
         return (
-            <div>
-                <div className="status">{status}</div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
+            <div className="game">
+                <div className="game-board">
+                    <Board 
+                        squares={current.squares}
+                        onClick={(i) => this.handleClick(i)}
+                    />
                 </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
+
+                {/* 历史步骤记录 */}
+                <div className="game-info">
+                    <div className="status">{status}</div>
+                    <ol>{moves}</ol>
                 </div>
             </div>
         );
@@ -98,28 +104,7 @@ class Board extends React.Component {
     }
 }
 
-class Game extends React.Component {
-    render() {
-        return (
-        <div className="game">
-            <div className="game-board">
-                <Board />
-            </div>
-            <div className="game-info">
-                <div>{/* status */}</div>
-                <ol>{/* TODO */}</ol>
-            </div>
-        </div>
-        );
-    }
-}
-
 ReactDOM.render(
     <Game />,
     document.getElementById('root')
 );
-  
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-// serviceWorker.unregister();
