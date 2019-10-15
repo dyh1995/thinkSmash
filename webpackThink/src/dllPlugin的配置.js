@@ -40,5 +40,4 @@ buildPlugins.push(
 
 //dllConfig/bundle-config.json
 `{"vendor":{"js":"vendor.js"}}`
-
-
+//AssetsPlugin的作用主要是生成当前输出的dll文件名映射,解决缓存更新问题,在config.js里面可以直接引用bundle-config.json的vendor.js使用输出的vendor文件名,而不用在打包更新dll后手动更新config里面引用到dll的配置.
