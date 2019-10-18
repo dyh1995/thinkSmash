@@ -94,15 +94,29 @@ module.exports = {
 
 4. 打包自己的文件，可以看到公共文件并没有被打包进来
 
-### 图片压缩
+### 图片压缩(两个插件)
 ```
     const ImageminPlugin = require('imagemin-webpack-plugin').default;
-    new ImageminPlugin({
-        disable: process.env.NODE_ENV !== 'production',
-        pngquant: {
-            quality: 70
-        }
-    })
+    const baseConfig = {
+        plugins: [
+            new ImageminPlugin({
+                disable: process.env.NODE_ENV !== 'production',
+                pngquant: {
+                    quality: 70
+                }
+            });
+        ]
+    }
+    
+    const tinyPngWebpackPlugin = require('tinypng-webpack-plugin');
+    const baseConfig = {
+        plugins: [
+            new tinyPngWebpackPlugin({
+                key:"OTDVlvKib83gk7Ys3iX1HB6FzpSFiKOZ",
+                ext: ['png'],//由于压缩较慢，故压缩PNG，其他图片请在切图时自行压缩
+            })
+        ]
+    }
 ```
 
 ### js压缩混淆
@@ -134,4 +148,14 @@ module.exports = {
             mangle: {}
         }
     }),
+```
+
+### 更好的代码错误提示
+```
+    const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+    const baseConfig = {
+        plugins: [
+            new FriendlyErrorsPlugin();
+        ]
+    }
 ```
