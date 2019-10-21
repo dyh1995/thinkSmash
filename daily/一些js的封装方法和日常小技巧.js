@@ -120,3 +120,33 @@ function scrollView(e) {
     e.scrollIntoView();
     } catch (err) {}
 }
+
+/**
+ * async/awite在promise返回reject时如何接收错误信息
+ */
+//使用try...catch处理
+let pro = function () {
+    return new Promise((resolve, reject) => {
+        reject('err')
+    });
+};
+let awaitResult = await pro().catch(function(err){
+    console.log(err);
+});
+
+/**
+ * Macrotask 与 Microtask
+ * 1. Macrotasks 包含了解析 HTML、生成 DOM、执行主线程 JS 代码和其他事件如 页面加载、输入、网络事件、定时器事件等。从浏览器的角度，Macrotask 代表的是一些离散的独立的工作
+ * 常见应用: setTimeout, setInterval, setImmediate, requestAnimationFrame, I/O, UI rendering
+ * 2. Microtasks 则是为了完成一些更新应用程序状态的较小的任务，如处理 Promise 的回调和 DOM 的修改，以便让这些任务在浏览器重新渲染之前执行。Microtask 应该以异步的方式尽快执行，所以它们的开销比 Macrotask 要小，并且可以使我们在 UI 重新渲染之前执行，避免了不必要的 UI 渲染。
+ * 常见应用: process.nextTick, Promises, Object.observe, MutationObserver
+ * 
+ * 执行顺序：
+ * Microtask Queue 具有更高的优先级，即执行一个 Macrotask 任务后，就会清空整个 Microtask Queue，此时如果有新的 Microtask 加入也会被执行。
+ * 
+ * Microtask 相比 Macrotask 具有更高的优先级
+ * Macrotask 总是在 JS 代码执行完成并且 Microtask Queue 清空之后执行
+ * JS 代码执行本身也是一个 Macrotask
+ * Microtask Queue 清空后有可能会重新渲染 UI
+ * Promise 属于 Microtask，setTimeout 属于 Macrotask
+ */
