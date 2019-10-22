@@ -150,3 +150,61 @@ let awaitResult = await pro().catch(function(err){
  * Microtask Queue 清空后有可能会重新渲染 UI
  * Promise 属于 Microtask，setTimeout 属于 Macrotask
  */
+
+ /**
+  * slice splice substring substr区别
+  * Array,String -> slice(start, end)
+  * Array -> splice(index,howmany,item1,itemx) 方法向/从数组中添加/删除项目，然后返回被删除的项目。 该方法会改变原始数组
+  * String -> substring(start, end)
+  * String -> substr(start, length)
+  */
+
+  /**
+   * 之前在做图片上传时都是调用的客户端提供的接口拉起相册，上传文件，
+   * 今天遇到了需要把页面在app外使用的情况，需要做app外部文件上传的兼容，记录如下
+   */
+  /**
+   * html代码
+   * <div class="photo_up_infos">
+        <p><span class="photo_up_info">点击上传正面</span></p>
+        <label for="uploadImg"/>
+        <input 
+            id="uploadImg" name="image"
+            type="file" 
+            accept="image/png, image/jpeg" 
+            style="display:none;"
+            @change="uploadImg($event)">
+    </div>
+   */
+let vue = {
+    methods: {
+        uploadImg(e){
+            return new Promise((resolve, reject) => {
+                if (e) {
+                    const formData = new FormData(); // 声明一个FormData对象
+                    formData.append('image', e.target.files[0]);
+                    //发送post请求,formData要放在data字段内
+                    //      {  // 设置axios的参数
+                    //          url: '请求地址',
+                    //          data: formData,
+                    //          method: 'post',
+                    //          headers: { 
+                    //              'Content-Type': 'multipart/form-data'
+                    //      }
+                    api.appOutUpload(formData).then(data => {
+                        if (data.result == 0) {
+                            resolve(data.data.url);
+                        } else {
+                            reject(data.message);
+                        }
+                    });
+                } else {
+                    reject(new Error('表单元素不存在'));
+                } 
+            });
+        }
+    }
+}
+//不使用圆括号，$event被自动当作实参传入
+// 使用圆括号，必须显式的传入$event对象，如果不传入可能最终找到的是全局的window .event
+  
