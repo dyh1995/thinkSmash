@@ -123,6 +123,7 @@ function scrollView(e) {
 
 /**
  * async/awite在promise返回reject时如何接收错误信息
+ * await要在async内使用
  */
 //使用try...catch处理
 let pro = function () {
@@ -207,4 +208,16 @@ let vue = {
 }
 //不使用圆括号，$event被自动当作实参传入
 // 使用圆括号，必须显式的传入$event对象，如果不传入可能最终找到的是全局的window .event
-  
+
+/**
+ * 利用js在保留当前页面，新打开一个tab页面
+ */
+let url = '';
+window.open(url, 'blank');
+
+/**
+ * 利用js在保留当前页面，新打开一个非tab页面
+ */
+let url = '';
+window.open(url, 'blank', "scrollbars=yes,resizable=1,modal=false,alwaysRaised=yes");
+//详细参数：https://www.runoob.com/jsref/met-win-open.html
