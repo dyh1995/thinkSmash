@@ -122,32 +122,35 @@ module.exports = {
 ### js压缩混淆
 ```
     const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-    new UglifyJsPlugin({
-        uglifyOptions: {
-            compress: {
-                warnings: false,
-                properties: false,
-                drop_debugger: true,
-                drop_console: true,
-                sequences: true,
-                dead_code: true,
-                conditionals: true,
-                booleans: true,
-                unused: true,
-                if_return: true,
-                join_vars: true
-            },
-            output: {
-                ascii_only: true,
-                // 去掉注释内容
-                // comments: true
-                keep_quoted_props: true,
-                beautify: false,
-                comments: false
-            },
-            mangle: {}
-        }
-    }),
+    optimization: {
+        minimizer: [new UglifyJsPlugin({
+                uglifyOptions: {
+                    compress: {
+                        warnings: false,
+                        properties: false,
+                        drop_debugger: true,
+                        drop_console: true,
+                        sequences: true,
+                        dead_code: true,
+                        conditionals: true,
+                        booleans: true,
+                        unused: true,
+                        if_return: true,
+                        join_vars: true
+                    },
+                    output: {
+                        ascii_only: true,
+                        // 去掉注释内容
+                        // comments: true
+                        keep_quoted_props: true,
+                        beautify: false,
+                        comments: false
+                    },
+                    mangle: {}
+                }
+            }
+        )],
+    }
 ```
 
 ### 更好的代码错误提示
