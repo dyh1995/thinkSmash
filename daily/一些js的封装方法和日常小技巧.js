@@ -221,3 +221,84 @@ window.open(url, 'blank');
 let url = '';
 window.open(url, 'blank', "scrollbars=yes,resizable=1,modal=false,alwaysRaised=yes");
 //详细参数：https://www.runoob.com/jsref/met-win-open.html
+
+/**
+ * definePropety函数的一些小结
+ */
+//作用：可以在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回这个对象。
+//语法形式 Object.defineProperty(obj, prop, descriptor) 三个参数：属性所在的对象、属性的名字和一个描述符对象。描述符对象descriptor分为两类。：数据属性和访问器属性
+
+//属性描述符必须是数据属性和访问器属性两种形式之一，不能同时是两者
+var obj = {
+    _num: 2
+}
+Object.defineProperty(obj, "num", {
+    //通用属性
+    enumerable: true,   //表示能否通过 for-in 循环返回属性
+    configurable: true, //表示能否通过 delete 删除属性从而重新定义属性
+
+    //数据属性
+    value: 1,       //该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。默认为 undefined
+    writable: true, //表示能否修改属性的值
+
+    //访问器属性
+    get: function(){
+        return this._num;
+    },
+    set: function(newValue){
+        this._num = newValue;
+    },
+});
+
+//下面是一个使用defineProperty的例子
+/************传统做法************/
+<div>
+    <div id="container1"></div>
+    <div id="container2"></div>
+</div>
+document.getElementById('button').addEventListener("click", function(){
+    var container = document.getElementById("container");
+    container.innerHTML = Number(container.innerHTML) + 1;
+});
+
+/************defineProperty做法************/
+var obj = {
+    value: 1
+  };
+
+  var obj2 = {
+    value: 1
+  };
+
+  function watch(obj, name, func) {
+    //存储value的变量
+    var value = obj[name];
+    Object.defineProperty(obj, name, {
+      get: function() {
+        return value;
+      },
+      set: function(newValue) {
+        /**
+         * 在set中不可以直接修改obj.value。会引起死循环
+         * 但是直接暴露一个value到最外层会导致需要监控很多属性值的改变时候，要一个一个写，很累，所以建立watch函数内部保存value值
+         **/
+        value = newValue;
+        func(value);
+      }
+    });
+    if (value) obj[name] = value;
+  }
+
+  watch(obj, "value", function(newvalue) {
+    document.getElementById("container1").innerHTML = newvalue;
+  });
+  watch(obj2, "value", function(newvalue) {
+    document.getElementById("container2").innerHTML = newvalue;
+  });
+
+  document.getElementById("container1").addEventListener("click", function() {
+    obj.value += 1; //试图修改obj的属性值会触发set
+  });
+  document.getElementById("container2").addEventListener("click", function() {
+    obj2.value += 2; //试图修改obj的属性值会触发set
+  });

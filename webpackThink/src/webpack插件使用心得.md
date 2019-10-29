@@ -151,6 +151,9 @@ module.exports = {
             }
         )],
     }
+
+    //webpack4后即便不加载UglifyJsPlugin插件时，打包如果设置mode: production时也会混淆压缩代码
+    //如果开发阶段不想打包出来的代码是混淆压缩过的，可以设置mode: development
 ```
 
 ### 更好的代码错误提示
