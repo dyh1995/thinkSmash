@@ -302,3 +302,32 @@ var obj = {
   document.getElementById("container2").addEventListener("click", function() {
     obj2.value += 2; //试图修改obj的属性值会触发set
   });
+
+  /**
+   * 正则表达式反向引用
+   */
+  document.addEventListener('DOMContentLoaded', function(){
+    let ua = window.navigator.userAgent;
+    ua += ' language/zh-CN';
+
+    try{
+        let match = ua.match(new RegExp(/language\/([^\s]*)/ig));
+        if(match && match.length > 0){
+            let lang = RegExp.$1;   //反向引用
+            console.log('匹配到了语言页面为：', lang)
+
+            let body = document.querySelector('body');
+            document.getElementsByTagName("body")[0].className = lang;
+
+            // 阿拉伯语言，设置页面镜像反转
+            if(lang == 'zh-CN'){
+                let html = document.getElementsByTagName('html')['0'];
+                html.dir = 'rtl';
+            }
+        }else{
+            throw new Error('Catch-Error：未匹配到页面语言');
+        }
+    }catch(e){
+        console.log(e);
+    }
+}, false);

@@ -56,3 +56,17 @@ export const lang = {
     musician: 'MUSICIAN', // 音乐人
     download: 'DOWNLOAD' // 下载客户端
 };
+
+/**
+ * css样式从右到左处理
+ * 主要方式是<html dir="rtl">
+ * <div dir="rtl"></div>
+ * 
+ * 有一些踩坑点
+ * 1.当html设置dir="rtl"后，部分脱离文档流的元素不受该属性影响
+ * 如absolute定位，float布局，尽量不使用这种布局
+ * 2.当页面整体改变dir为rtl后，如果部分元素不想改变方向，可以在该元素上使用dir="ltr"
+ * 3.>箭头在改变方向后，文本内容也会发生方向改变，但汉字不会改变阅读方向
+ * 4.避免不必要的样式，如text-align: left
+ * 5.列表title的分边显示，最好不要设定tab的宽度，同时不适用text-align指定对其方式，外层使用flex布局，space-between
+ */

@@ -108,6 +108,7 @@ module.exports = {
         ]
     }
     
+    //https://tinypng.com/developers获取key
     const tinyPngWebpackPlugin = require('tinypng-webpack-plugin');
     const baseConfig = {
         plugins: [
@@ -164,4 +165,13 @@ module.exports = {
             new FriendlyErrorsPlugin();
         ]
     }
+```
+
+### VueLoaderPlugin
+Vue Loader v15现在需要配合一个webpack插件才能正确使用，详情见https://vue-loader.vuejs.org/zh/migrating.html
+```
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+plugins: [
+    new VueLoaderPlugin()
+]
 ```
