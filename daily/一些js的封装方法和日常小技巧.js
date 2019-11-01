@@ -304,7 +304,7 @@ var obj = {
   });
 
   /**
-   * 正则表达式反向引用
+   * 正则表达式反向引用 
    */
   document.addEventListener('DOMContentLoaded', function(){
     let ua = window.navigator.userAgent;
