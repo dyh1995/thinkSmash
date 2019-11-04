@@ -15,3 +15,8 @@ vue-loader@13.7.2 和vue-loader@14.2.3是已经修复了，修复内容如下：
 code = prettier.format(code, { semi: false, parser: 'babylon' })
 ```
 指定了parser为babylon。
+
+### vue-cli的使用方法
+npm install -g @vue/cli@3.2.1
+vue create hello-world
+选择Manually select features可以进行自定义配置
