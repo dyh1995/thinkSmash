@@ -331,3 +331,17 @@ var obj = {
         console.log(e);
     }
 }, false);
+
+/**
+ * js实现类似客户端调用window.onResume逻辑
+ */
+window.onpageshow = event => {
+    // onload(mounted)事件在页面从浏览器缓存中读取时不触发, 如果页面从浏览器的缓存中读取，event.persisted属性返回 ture，否则返回 false。
+    if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+        if(units.platform().ios){   //onpageshow方法在ios上可以触发，但是不知道为什么实际抓包时发现init()里面的接口并没有请求，缓存问题？
+            window.location.reload();
+        }else{
+            this.init();
+        }
+    }
+};

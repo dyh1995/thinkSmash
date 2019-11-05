@@ -139,6 +139,7 @@
                 sort: {
                     arr: [113, 50, 12, 5, 56, 46, 26, 37, 41],
 
+                    //冒泡排序
                     babbleSort(arr) {
                         //平均时间复杂度	最好情况	最坏情况	空间复杂度
                         // O(n2)	O(n)	O(n2)	O(1)
@@ -147,7 +148,12 @@
                             for (var j = 0; j < len - 1 - i; j++) {
                                 arr[j] > arr[j + 1] && this.swap(j, j + 1, arr);
                             }
+                            console.log('res',arr.toString())
                         }
+                        //res 50,12,5,56,46,26,37,41,113
+                        //res 12,5,50,46,26,37,41,56,113
+                        //res 5,12,46,26,37,41,50,56,113
+                        //res 5,12,26,37,41,46,50,56,113
 
                         return arr;
                     },
@@ -208,6 +214,59 @@
                         return array;
                     },
 
+                    //快速排序
+                    // 1.从数组中取出一个数作为基准(pivot)。
+                    // 2.在原数组中进行移动，将大于基准的数放到基准右边，小于基准的数放到基准左边，在基准左右形成两个子数组。
+                    // 3.在左右子数组中反复执行步骤1、2，直到所有子数组只剩下一个数。
+
+                    /*
+                        原数组：[113, 50, 12, 5, 56, 46, 26, 37, 41]
+                        一轮排序结果： 41,50,12,5,56,46,26,37,113
+                        arr[8]=pivot113： 113
+                        一轮排序结果： 37,26,12,5,41,46,56,50,113
+                        arr[4]=pivot41： 41
+                        一轮排序结果： 5,26,12,37,41,46,56,50,113
+                        arr[3]=pivot37： 37
+                        一轮排序结果： 5,26,12,37,41,46,56,50,113
+                        arr[0]=pivot5： 5
+                        一轮排序结果： 5,12,26,37,41,46,56,50,113
+                        arr[2]=pivot26： 26
+                        一轮排序结果： 5,12,26,37,41,46,56,50,113
+                        arr[5]=pivot46： 46
+                        一轮排序结果： 5,12,26,37,41,46,50,56,113
+                        arr[7]=pivot56： 56
+                    */
+                    quickSort(arr, i, j) {
+                        if(i < j) {
+                            let left = i;
+                            let right = j;
+                            let pivot = arr[left];  //设定一个比较基准
+
+                            while(i < j) {
+                                while(arr[j] >= pivot && i < j) {  // 从后往前找比基准小的数
+                                    j--;
+                                }
+                                if(i < j) {
+                                    arr[i++] = arr[j];
+                                }
+                                while(arr[i] <= pivot && i < j) {  // 从前往后找比基准大的数
+                                    i++;
+                                }
+                                if(i < j) {
+                                    arr[j--] = arr[i];
+                                }
+                            }
+                            arr[i] = pivot;
+                            console.log('一轮排序结果：', arr.toString())
+                            console.log(`arr[${i}]=pivot${pivot}：`, pivot)
+
+                            this.quickSort(arr, left, i - 1);   //递归取当前轮排好的数组前半部分继续排序
+                            this.quickSort(arr, i + 1, right);  //递归取当前轮排好的数组后半部分继续排序
+
+                            return arr;
+                        }
+                    },
+
                     swap(i, j, array) {
                         var temp = array[j];
                         array[j] = array[i];
@@ -215,7 +274,7 @@
                     },
 
                     init() {
-                        console.log(this.insertSort(this.arr));
+                        console.log(this.quickSort(this.arr, 0, this.arr.length - 1));
                     }
                 },
 
@@ -412,7 +471,7 @@
                 },
 
                 init() {
-                    this.runtime(this.KaprekarsConstant.init, algorithm.KaprekarsConstant);
+                    this.runtime(this.sort.init, algorithm.sort);
                 }
             };
 
