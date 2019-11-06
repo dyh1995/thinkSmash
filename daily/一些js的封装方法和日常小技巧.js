@@ -334,6 +334,7 @@ var obj = {
 
 /**
  * js实现类似客户端调用window.onResume逻辑
+ * bfcache(back-forward cache,可称为“往返缓存”)行为提供了pagehide和pageshow(若页面在bfcahe中，再次打开页面不会触发load)
  */
 window.onpageshow = event => {
     // onload(mounted)事件在页面从浏览器缓存中读取时不触发, 如果页面从浏览器的缓存中读取，event.persisted属性返回 ture，否则返回 false。
