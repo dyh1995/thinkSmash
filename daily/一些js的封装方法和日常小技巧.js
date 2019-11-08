@@ -346,3 +346,10 @@ window.onpageshow = event => {
         }
     }
 };
+
+/**
+ * 2019-11-06T16:32:18.000Z时间转北京当地时间，需要减8小时
+ */
+var t = '2019-11-06T16:32:18.000Z';
+var date = new Date(item.frontmatter.date);
+var localTime = date.setHours(date.getHours() - 8);
