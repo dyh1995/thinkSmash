@@ -1,5 +1,5 @@
 ### css压缩插件
-```
+```JavaScript
     const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
     const baseConfig = {
         plugins: [
@@ -10,7 +10,7 @@
 
 ### css提取插件
 ExtractTextPlugin插件配合css-loader将css文件link到html，filename是打包出来的文件名
-```
+```JavaScript
     const ExtractTextPlugin = require('extract-text-webpack-plugin');
     const baseConfig = {
         plugins: [
@@ -23,7 +23,7 @@ ExtractTextPlugin插件配合css-loader将css文件link到html，filename是打�
 
 ### 公共文件的提取插件，链接提取dll文件
 1. 创建dll配置文件
-```
+```JavaScript
 var path = require('path');
 var webpack = require('webpack');
 var AssetsPlugin = require('assets-webpack-plugin');
@@ -80,7 +80,7 @@ module.exports = {
 
 3. webpack配置添加dll设置
 
-```
+```JavaScript
     const webpack = require('webpack');
     const baseConfig = {
         plugins: [
@@ -95,7 +95,7 @@ module.exports = {
 4. 打包自己的文件，可以看到公共文件并没有被打包进来
 
 ### 图片压缩(两个插件)
-```
+```JavaScript
     const ImageminPlugin = require('imagemin-webpack-plugin').default;
     const baseConfig = {
         plugins: [
@@ -121,7 +121,7 @@ module.exports = {
 ```
 
 ### js压缩混淆
-```
+```JavaScript
     const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
     optimization: {
         minimizer: [new UglifyJsPlugin({
@@ -158,7 +158,7 @@ module.exports = {
 ```
 
 ### 更好的代码错误提示
-```
+```JavaScript
     const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
     const baseConfig = {
         plugins: [
@@ -169,7 +169,7 @@ module.exports = {
 
 ### VueLoaderPlugin
 Vue Loader v15现在需要配合一个webpack插件才能正确使用，详情见https://vue-loader.vuejs.org/zh/migrating.html
-```
+```JavaScript
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 plugins: [
     new VueLoaderPlugin()

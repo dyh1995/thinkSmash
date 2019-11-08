@@ -1,13 +1,13 @@
 由于rem的自适应性，可以用来适配不同分辨率的页面
 页面根字号的设定如下：
+```css
 :root{
 	--psd: 750;
 	--rfz: 100;
 }
-
 html{font-size: calc(100vw / var(--psd) * var(--rfz));}
-
 ```
+
 例设计稿宽度为750px，根元素（body）的字号大小是13.33vw
 font-size = 100vw / var(--psd) * var(--rfz)
           = 100vw / 750 * 100 

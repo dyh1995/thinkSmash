@@ -1,7 +1,7 @@
 
 ### ihpone上h5页面字体被放大的问题处理
 text-size-adjust：auto | none | <percentage> 属性允许我们控制将文本溢出算法应用到一些手机设备上，添加代码
-```
+```css
 html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -12,7 +12,7 @@ html {
 [webpack模块化原理-ES module](http://www.tensweets.com/article/5badeb04f0cb0c04f86b23e9 "webpack模块化原理-ES module")
 
 ### 解决ihpone上h5页面滑动卡顿的问题
-```
+```css
 -webkit-overflow-scrolling: touch;
 ```
 
@@ -23,6 +23,6 @@ html {
 针对动画闪动的问题，可以设定background-posion和图片宽高为Px，不转为rem，同时使用媒体查询进行缩放
 
 ###  移动端span元素点击时出现高亮蓝色背景的样式兼容问题
-```
+```css
 -webkit-tap-highlight-color: rgba(0,0,0,0);
 ```

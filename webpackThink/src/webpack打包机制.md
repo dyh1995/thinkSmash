@@ -80,7 +80,7 @@ console.log('Hello World!'+__WEBPACK_IMPORTED_MODULE_0__fna_js__["a" /* default 
 4. __webpack_require__(0)，直接返回了缓存中的installedModules[0]，但此时installedModules[0].export为{}	//b.js内引入了a.js后尝试调用a.name，但此时a为{}，报错
 
 总结成一句话就是webpack加载了一个被认为已加载完成，但实际未加载完成的模块，**并调用了这个模块** 的属性，导致报错。
-```
+```JavaScript
 ([
 /* 0 */
 	(function(module, __webpack_exports__, __webpack_require__) {
@@ -114,7 +114,7 @@ console.log('Hello World!'+__WEBPACK_IMPORTED_MODULE_0__fna_js__["a" /* default 
 
 
 ## 三、条件语句引入模块时对webpack打包的影响
-```
+```JavaScript
 //index.js
 function test(type){
     if(type == 1){
@@ -131,7 +131,7 @@ function test(type){
 
 ## 四、import引入模块时webpack打包的异同
 想要实现真正的动态加载模块，需要使用import()方法。
-```
+```JavaScript
 //index.js
 function test(type){
     if(type == 1){
@@ -141,9 +141,10 @@ function test(type){
     }
 }
 ```
+
 打包后bundle.js中并没有出现fna模块的内容，而是出现了0.bundle.js这个文件，内容是模块fna，代码如下
 通过bundle.js中的条件语句，实现了动态加载0.bundle.js文件。
-```
+```JavaScript
 //0.bundle.js
 webpackJsonp([0],[
 /* 0 */,
