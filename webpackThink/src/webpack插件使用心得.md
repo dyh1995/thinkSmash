@@ -8,7 +8,7 @@
     }
 ```
 
-### css提取插件
+### css提取插件(两个插件)
 ExtractTextPlugin插件配合css-loader将css文件link到html，filename是打包出来的文件名
 ```JavaScript
     const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -17,6 +17,31 @@ ExtractTextPlugin插件配合css-loader将css文件link到html，filename是打�
             new ExtractTextPlugin({
                 filename:'static/[name]/css/index.css?v=[md5:contenthash:hex:20]'
             }),
+        ]
+    }
+```
+
+```JavaScript
+    const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+    const baseConfig = {
+        module: {
+            rules: [{
+                test: /\.css$/,
+                use: [
+                    {loader: MiniCssExtractPlugin.loader},
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: false
+                        }
+                    }
+                ]
+            }]
+        },
+        plugins: [
+            new MiniCssExtractPlugin({   //如果vendors有需要打包的公共css,放开此注释,可以打包到vendors下static/effect.css
+                filename: 'static/effect.css'
+            })
         ]
     }
 ```

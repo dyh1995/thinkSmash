@@ -10,6 +10,13 @@
 function setCookie(name, value, expireMin, domain) {
     domain = domain || window.location.hostname;
 
+    if (domain == 'root') {
+        var urlHost = location.hostname;
+        var ary = urlHost.split('.');
+        var len = ary.length;
+        domain = ary[len - 2] + '.' + ary[len - 1];
+    }
+
     if (arguments.length > 2) {
         var expireTime = new Date(new Date().getTime() + parseInt(expireMin * 60 * 1000));
         document.cookie = name + '=' + encodeURIComponent(value) + '; path=/; domain=' + domain + '; expires=' + expireTime.toGMTString();
