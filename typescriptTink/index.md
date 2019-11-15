@@ -132,12 +132,20 @@ import { Component, Vue } from "vue-property-decorator";
 import yourComponent from "./yourComponent.vue";
 
 @Component({
-  components: { yourComponent }
+  components: { yourComponent },
+  filters: {
+    nextLevel(num) {
+      return parseInt(num, 10) + 1;
+    }
+  }
 })
 export default class App extends Vue {
   private v1: string = "user";
   public v2: object = {};
   protected v3: object = {};
+
+  @Prop()
+  public someInfo: any;
 
   //计算属性
   get v1Computed(){

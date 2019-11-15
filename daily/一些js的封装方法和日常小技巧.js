@@ -358,3 +358,8 @@ var localTime = date.setHours(date.getHours() - 8);
  * 修改页面title
  */
 document.title  = 'xxx';
+
+/**
+ * 数组去重
+ */
+function un(arr){var set = new Set(arr);return Array.from(set)}
