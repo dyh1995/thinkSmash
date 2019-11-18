@@ -363,3 +363,33 @@ document.title  = 'xxx';
  * 数组去重
  */
 function un(arr){var set = new Set(arr);return Array.from(set)}
+
+/**
+ * audio一些做法
+ */
+function playAudio (src) {
+    if (!src || !src.trim()) {
+        // 接口报错的话，itemSound是不存在的，代码应该停止播放逻辑
+        return false;
+    }
+
+    var audio = document.getElementById('audio');
+    this.audioUrl = src;
+    audio.load();
+
+    setTimeout(() => {
+        if (audio.paused) {
+            /* 如果已经暂停 */
+            audio.play(); /* 播放 */
+        } else {
+            audio.pause(); /* 暂停 */
+        }
+    }, 500);
+}
+
+function stopAudio () {
+    var audio = document.getElementById('audio');
+    if (!audio.paused) {
+        audio.pause(); /* 暂停 */
+    }
+}
