@@ -58,11 +58,13 @@ shout("send in the clowns");
 //2. 优雅的合成式
 //定义compose
 //es5
+//reduceRight(callbacks, initialValue)
+//callbacks(prevValue, currentValue)
 var compose = function(...args) {
-    return function(x) {
+    return function(initialValue) {
         return args.reduceRight(function(value, item){
             return item(value)
-        }, x);
+        }, initialValue);
     }
 };
 //es6
