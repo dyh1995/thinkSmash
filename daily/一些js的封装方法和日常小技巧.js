@@ -395,3 +395,14 @@ function stopAudio () {
         audio.pause(); /* 暂停 */
     }
 }
+
+/**
+ * node.cloneNode(deep)
+ * 该方法将复制并返回调用它的节点的副本。如果传递给它的参数是 true，它还将递归复制当前节点的所有子孙节点。否则，它只复制当前节点。
+ */
+node.cloneNode(deep);
+
+/**
+ * appendChild的坑
+ */
+node.appendChild(node.childNodes[0]); //当node已经存在子节点childNodes[0]时，复制先删除当前子节点，再追加该childNodes[0]
