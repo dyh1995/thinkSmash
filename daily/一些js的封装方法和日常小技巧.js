@@ -363,8 +363,28 @@ document.title  = 'xxx';
 
 /**
  * 数组去重
+ * ES6 提供了新的数据结构 Set。它类似于数组，但是成员的值都是唯一的，没有重复的值。
+ * Set 本身是一个构造函数，用来生成 Set 数据结构。
+ * Array.from可以将一个类数组对象或者可遍历对象转换成一个真正的数组。
+ * 所谓类数组对象，最基本的要求就是具有length属性的对象。
  */
 function un(arr){var set = new Set(arr);return Array.from(set)}
+
+/**
+ * 字符串去重
+ */
+function removeRepeatStr(str){
+    var obj = {};
+    var newStr = '';
+    var len = str.length;
+    for(var i = 0; i < len; i++){
+        if(!obj[str[i]]){
+            newStr = newStr + str[i];
+            obj[str[i]] = 1;//注意，这里的1是给对象属性赋值，这个值可以任意取。意思是把每个遍历的字符作为对象属性并赋值保存，保证该属性的唯一性
+        }
+    }
+    return newStr;
+}
 
 /**
  * audio一些做法
@@ -434,3 +454,101 @@ node.appendChild(node.childNodes[0]); //当node已经存在子节点childNodes[0
  * export default {}
  * import aa from '';
  *  */
+
+ /**
+  * vuerouter hash模式和history模式区别
+  * 对于vue这类渐进式前端开发框架，为了构建 SPA（单页面应用），需要引入前端路由系统，
+  * 这也就是 Vue-Router 存在的意义。前端路由的核心，就在于 —— 改变视图的同时不会向后端发出请求。
+  * 
+  * 1.hash模式背后的原理是onhashchange事件,可以在window对象上监听这个事件:
+  * hash —— 即地址栏 URL 中的 # 符号（此 hash 不是密码学里的散列运算）。
+  * 比如这个 URL：www.abc.com/#/hello的值为 #/hello。
+  * 它的特点在于：hash 虽然出现在 URL 中，但不会被包括在 HTTP 请求中，对后端完全没有影响，
+  * 因此改变 hash 不会重新加载页面。
+  * 
+  * 2.history —— 利用了 HTML5 History Interface 中新增的 pushState() 和 replaceState() 方法。
+  * （需要特定浏览器支持）这两个方法应用于浏览器的历史记录栈，在当前已有的 back、forward、go 的基础之上，
+  * 它们提供了对历史记录进行修改的功能。只是当它们执行修改时，虽然改变了当前的 URL，但浏览器不会立即向后端发送请求。
+  * 如 www.abc.com/book/id
+  *  */
+ window.onhashchange = function(event){
+    console.log(event.oldURL, event.newURL);
+    let hash = location.hash.slice(1); 
+    document.body.style.color = hash;
+}
+
+/**
+ * 移动端1px问题
+ * 检测手机是几倍屏-》window.devicePixelRatio
+ * 在不同的屏幕上(普通屏幕 vs retina屏幕)，css像素所呈现的大小(物理尺寸)是一致的，
+ * 不同的是1个css像素所对应的物理像素个数是不一致的。
+ * 在普通屏幕下，1个css像素 对应 1个物理像素(1:1)。
+ * 在retina（视网膜）屏幕下，1个css像素对应 4个物理像素(1:4)。
+ * 
+ * 使用 viewport+rem+js 来实现的，可以直接设置1px就行了
+ * <html>  
+    <head> 
+        <title>1px question</title> 
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+        <meta name="viewport" id="WebViewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">      
+        <style> 
+            html { 
+                font-size: 1px; 
+            }            
+            * { 
+                padding: 0; 
+                margin: 0; 
+            } 
+               
+            .bds_b { 
+                border-bottom: 1px solid #ccc; 
+            } 
+               
+            .a, 
+            .b { 
+                margin-top: 1rem; 
+                padding: 1rem;               
+                font-size: 1.4rem; 
+            } 
+               
+            .a { 
+                width: 30rem; 
+            } 
+               
+            .b { 
+                background: #f5f5f5; 
+                width: 20rem; 
+            } 
+        </style> 
+        <script> 
+           
+            var viewport = document.querySelector("meta[name=viewport]"); 
+            //下面是根据设备像素设置viewport 
+            if (window.devicePixelRatio == 1) { 
+                viewport.setAttribute('content', 'width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no'); 
+            } 
+            if (window.devicePixelRatio == 2) { 
+                viewport.setAttribute('content', 'width=device-width,initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no'); 
+            } 
+            if (window.devicePixelRatio == 3) { 
+                viewport.setAttribute('content', 'width=device-width,initial-scale=0.3333333333333333, maximum-scale=0.3333333333333333, minimum-scale=0.3333333333333333, user-scalable=no'); 
+            } 
+            var docEl = document.documentElement; 
+            var fontsize = 10 * (docEl.clientWidth / 320) + 'px'; 
+            docEl.style.fontSize = fontsize; 
+               
+        </script> 
+    </head> 
+    <body> 
+        <div class="bds_b a">下面的底边宽度是虚拟1像素的</div> 
+        <div class="b">上面的边框宽度是虚拟1像素的</div> 
+    </body> 
+</html></span> 
+ */
+
+/**
+ * http2特性
+ * 1.服务器推送
+ * 2.多路复用（http1长连接复用）
+ * 3.头部压缩
+ */
