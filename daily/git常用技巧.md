@@ -10,3 +10,6 @@ git branch <branch_name> <hash_val>
 
 ### 忽略eslint语法检查，提交代码
 git commit -m '' --no-verify
+
+### 清除当前目录下所有没add的修改
+git checkout .
