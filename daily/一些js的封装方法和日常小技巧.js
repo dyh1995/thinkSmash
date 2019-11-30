@@ -152,6 +152,18 @@ let awaitResult = await pro().catch(function(err){
  * JS 代码执行本身也是一个 Macrotask
  * Microtask Queue 清空后有可能会重新渲染 UI
  * Promise 属于 Microtask，setTimeout 属于 Macrotask
+ * 
+ * 
+ * this.$nextTick原理
+ * data: {
+ *  aa: 0
+ * }
+ * 1. this.aa = '1',
+ * 改变data上的数据后，触发了数据绑定的set方法内的watcher，把更新dom的任务加到异步队列内
+ * 2.console.log(dom.innerHTML) //0,因为此时还在同步任务内，js主线程，dom未更新，获取的还是原数据
+ * 3.调用this.$nextTick，把一个任务添加到任务队列末尾（可能是宏任务，也可能是微任务，nextTick内部有降级策略）
+ * 3.主线程执行完毕，开始执行异步任务，先更新dom
+ * 4.执行末尾的任务，即$nextTick内的函数，此时dom已更新
  */
 
  /**

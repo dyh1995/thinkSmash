@@ -157,6 +157,26 @@
                 }
             });
         }
+    
+        /**
+         * 说明：
+         * 1.new Vue()对象的时候初始化data属性，把data上的属性循环进行observe（即defineProperty设置set和get方法）
+         * 2.设置defineProperty时new Dep(),具有了一个subs数组
+         * 2.1 挂载之前需要获取生成的dom(即render函数输出了模板),内部触发了new Watcher()操作
+         * 3.new Watcher()时Dep.target = this;即Dep.target就是当前这个Watcher
+         * 4.调用Watcher原型方法update()
+         * 5.update()内调用Watcher原型方法get();
+         * 6.get()内获取了data上一个属性的值，触发了这个data值之前绑定的get方法，同时给Watcher的value上面添加了最新值，并更新dom
+         * 7.值绑定的get方法内部把Dep.target（即当前Watcher）添加到subs数组内
+         * 8.返回到第4布之后，置空Dep.target
+         * 
+         * 
+         * 设置一个data值的环节
+         * 1.触发该值绑定的set方法
+         * 2.set方法内先判断新值与当前值是否相等，不等的话执行dep.notify()
+         * 3.dep.notify()内部循环遍历了subs数组，对数组内每一个Watcher执行Watcher的update方法
+         * 4.update（）内先调用this.get()触发之前值绑定的get方法，但是Dep.target此时为空，不会再把当前watcher添加到subs里面。同时给Watcher的value上面添加了最新值，并更新dom
+         * /
     </script>
 </body>
 
