@@ -552,3 +552,16 @@ node.appendChild(node.childNodes[0]); //当node已经存在子节点childNodes[0
  * 2.多路复用（http1长连接复用）
  * 3.头部压缩
  */
+
+ /**
+  * vue监听一个元素滚动到底部
+  * 1. 绑定事件
+  * @scroll="scroll($event)"
+  * 2.处理事件
+  */
+function scroll(e){
+    var scrollTop = dom.scrollTop
+    if(dom.scrollHeight == dom.clientHeight + scrollTop ) {
+        console.log("Touch_Buttom!");
+    }   
+}
