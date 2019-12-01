@@ -160,9 +160,16 @@
     
         /**
          * 说明：
+         一、new Vue()阶段
          * 1.new Vue()对象的时候初始化data属性，把data上的属性循环进行observe（即defineProperty设置set和get方法）
          * 2.设置defineProperty时new Dep(),具有了一个subs数组
-         * 2.1 挂载之前需要获取生成的dom(即render函数输出了模板),内部触发了new Watcher()操作
+         二、$mount()阶段
+         在执行$mount触发的mountComponent方法中，定义了方法
+         updateComponent = () => {vm._update(vm._render(), hydrating)}
+         (把render函数返回的vnode实例化并进行patch)，和vm._watcher = new Watcher(vm, updateComponent, noop)两段关键代码。
+
+         * 2.1 _render函数主要是通过调用vm.$options.render函数，并返回一个vnode,内部获取了data上的值，
+         触发了绑定的get方法)
          * 3.new Watcher()时Dep.target = this;即Dep.target就是当前这个Watcher
          * 4.调用Watcher原型方法update()
          * 5.update()内调用Watcher原型方法get();

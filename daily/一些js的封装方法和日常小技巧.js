@@ -310,12 +310,9 @@ var obj = {
     document.getElementById("container2").innerHTML = newvalue;
   });
 
-  document.getElementById("container1").addEventListener("click", function() {
-    obj.value += 1; //试图修改obj的属性值会触发set
-  });
-  document.getElementById("container2").addEventListener("click", function() {
-    obj2.value += 2; //试图修改obj的属性值会触发set
-  });
+  
+  
+  
 
   /**
    * 正则表达式反向引用 

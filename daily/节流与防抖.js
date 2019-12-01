@@ -22,4 +22,4 @@ function debounce(fn,times){
             fn.apply(this,arguments)
         },times)
     }
-}
+} 
