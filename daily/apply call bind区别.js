@@ -9,3 +9,18 @@ call()
 bind()
     bind()的作用与call()和apply()一样，都是可以改变函数运行时上下文，区别是call()和apply()在调用函数之后会立即执行，而bind()方法调用并改变函数运行时上下文后，返回一个新的函数，供我们需要时再调用。
  */
+
+ function Person(){}
+ Person.prototype = {
+    name: 'name2',
+    say: function() {
+        console.log("My color is " + this.name);
+    }
+ }
+ var p1 = new Person();
+ p1.say();
+
+ p2 = {
+     name: 'p2name'
+ }
+ p1.say.call(p2)
