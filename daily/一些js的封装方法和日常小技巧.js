@@ -574,3 +574,21 @@ function scroll(e){
         console.log("Touch_Buttom!");
     }   
 }
+
+/**
+ * eval函数
+ * 1. eval函数的作用域就是执行的上下文作用域
+ * 2. 如果要全局使用。则window.eval
+ * 
+ * eval === eval.call(this, str)；
+ * window.eval === eval.call(window, str)；
+ * 
+ * 3. eval的缺点：
+ * 1）性能差
+ * 2）有安全问题
+ * 3）兼容性,在IE6/7/8下还有兼容性的问题，就是说eval和window.eval在IE6/7/8下结果不对，需要换成window.execScript
+ * 
+ * 替代方案
+ * window.execScript
+ * 
+ */

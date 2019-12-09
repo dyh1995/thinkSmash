@@ -21,6 +21,6 @@ bind()
  p1.say();
 
  p2 = {
-     name: 'p2name'
+    //  name: 'p2name'
  }
  p1.say.call(p2)
