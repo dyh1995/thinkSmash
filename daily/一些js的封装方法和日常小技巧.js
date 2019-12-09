@@ -75,35 +75,7 @@ var shout = compose(exclaim, toUpperCase);  //组合函数
 shout("send in the clowns");
 //=> "SEND IN THE CLOWNS!"
 function sort(i, j, arr){
-    while(i<j){
-        var left = i;
-        var right = j;
-        var pivot = arr[left];
 
-        while(i < j){
-            while(arr[j] >= pivot && i < j){
-                j--;
-            }
-            if(i < j){
-                arr[i++] = arr[j];
-                i++;
-            }
-            while(arr[i] <= pivot && i < j){
-                i++;
-            }
-            if(i<j){
-                arr[j] = arr[i];
-                j--;
-            }
-        }
-        arr[i] = pivot;
-
-        sort(left, i - 1, arr);
-        sort(i + 1, right, arr);
-    }
-
-    return arr;
-}
 /**
  * let	var	const区别 
  */
@@ -619,4 +591,19 @@ function equal(t1, t2){
     }else{
         return false;
     }
-}
+} * eval函数
+ * 1. eval函数的作用域就是执行的上下文作用域
+ * 2. 如果要全局使用。则window.eval
+ * 
+ * eval === eval.call(this, str)；
+ * window.eval === eval.call(window, str)；
+ * 
+ * 3. eval的缺点：
+ * 1）性能差
+ * 2）有安全问题
+ * 3）兼容性,在IE6/7/8下还有兼容性的问题，就是说eval和window.eval在IE6/7/8下结果不对，需要换成window.execScript
+ * 
+ * 替代方案
+ * window.execScript
+ * 
+ */
