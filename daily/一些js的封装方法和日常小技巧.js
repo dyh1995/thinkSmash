@@ -74,7 +74,36 @@ var exclaim = function(x) { return x + '!'; };
 var shout = compose(exclaim, toUpperCase);  //组合函数
 shout("send in the clowns");
 //=> "SEND IN THE CLOWNS!"
+function sort(i, j, arr){
+    while(i<j){
+        var left = i;
+        var right = j;
+        var pivot = arr[left];
 
+        while(i < j){
+            while(arr[j] >= pivot && i < j){
+                j--;
+            }
+            if(i < j){
+                arr[i++] = arr[j];
+                i++;
+            }
+            while(arr[i] <= pivot && i < j){
+                i++;
+            }
+            if(i<j){
+                arr[j] = arr[i];
+                j--;
+            }
+        }
+        arr[i] = pivot;
+
+        sort(left, i - 1, arr);
+        sort(i + 1, right, arr);
+    }
+
+    return arr;
+}
 /**
  * let	var	const区别 
  */
@@ -573,4 +602,21 @@ function scroll(e){
     if(dom.scrollHeight == dom.clientHeight + scrollTop ) {
         console.log("Touch_Buttom!");
     }   
+}
+
+/**
+ * 判断两个树是否相等
+ */
+function equal(t1, t2){
+    if(t1 == null && t2 == null){//都为空，相等
+        return true;
+    }
+    if(!t1 || !t2){ //一个空，一个不空（都不为空条件为t1&&t2）
+        return false;
+    }
+    if(t1.value == t2.value){
+        return tree(t1.left, t2.left) && tree(t1.right, t2.right);
+    }else{
+        return false;
+    }
 }
