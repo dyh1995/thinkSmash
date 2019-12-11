@@ -591,7 +591,9 @@ function equal(t1, t2){
     }else{
         return false;
     }
-} * eval函数
+}
+
+/* eval函数
  * 1. eval函数的作用域就是执行的上下文作用域
  * 2. 如果要全局使用。则window.eval
  * 
