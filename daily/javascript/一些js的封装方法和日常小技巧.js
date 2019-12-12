@@ -607,5 +607,10 @@ function equal(t1, t2){
  * 
  * 替代方案
  * window.execScript
- * 
  */
+
+ /**
+  * dom.children和dom.childNodes区别
+  * dom.children不包含text节点
+  * dom.childNodes包含text节点
+  */
