@@ -614,3 +614,12 @@ function equal(t1, t2){
   * dom.children不包含text节点
   * dom.childNodes包含text节点
   */
+
+  /**图片加载成功与失败事件 */
+var imgDom = document.getElementById('img');
+imgDom.onload = function() {
+    imgDom.style.visibility = 'visible';
+};
+imgDom.onerror = function() {
+    imgDom.style.visibility = 'hidden';
+};
