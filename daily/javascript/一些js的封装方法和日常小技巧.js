@@ -164,7 +164,7 @@ let awaitResult = await pro().catch(function(err){
  * 2.console.log(dom.innerHTML) //0,因为此时还在同步任务内，js主线程，dom未更新，获取的还是原数据
  * 3.调用this.$nextTick，把一个任务添加到任务队列末尾（可能是宏任务，也可能是微任务，nextTick内部有降级策略）
  * 3.主线程执行完毕，开始执行异步任务，先更新dom
- * 4.执行末尾的任务，即$nextTick内的函数，此时dom已更新
+ * 4.执行末尾的任务，即$nextTick内的函数，此时dom已更新 
  */
 
  /**
@@ -623,3 +623,33 @@ imgDom.onload = function() {
 imgDom.onerror = function() {
     imgDom.style.visibility = 'hidden';
 };
+
+/**
+ * map与forEach,filter,every,some区别
+ */
+var arr = [1,2,3];
+var res = arr.forEach((value, index, arr)=>{
+    value *= 2;
+}); //res: undefined, arr: [1,2,3]
+var res = arr.forEach((value, index, arr)=>{
+    arr[index] = value * 2;
+}); //res: undefined, arr: [2,4,6]
+
+var res = arr.map((value, index, arr)=>{
+    console.log(value)
+    return value *= 2;
+}); //res:[2,4,6], arr: [1,2,3]
+
+//过滤数组
+var res = arr.filter((value, index)=>value<=2);//res:[1,2]
+
+//判断数组是否全部满足条件
+var res = arr.every((value, index)=>value<=2)//res:false
+var res = arr.every((value, index)=>value<10)//res:true
+
+//判断数组是否有一个满足条件
+var res = arr.some((value, index)=>value<=2);//res:true
+var res = arr.some((value, index)=>value<1);//res:false
+
+var res = arr.includes(2);  //res: true
+
