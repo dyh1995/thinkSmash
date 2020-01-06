@@ -164,7 +164,7 @@ let awaitResult = await pro().catch(function(err){
  * 2.console.log(dom.innerHTML) //0,因为此时还在同步任务内，js主线程，dom未更新，获取的还是原数据
  * 3.调用this.$nextTick，把一个任务添加到任务队列末尾（可能是宏任务，也可能是微任务，nextTick内部有降级策略）
  * 3.主线程执行完毕，开始执行异步任务，先更新dom
- * 4.执行末尾的任务，即$nextTick内的函数，此时dom已更新 
+ * 4.执行末尾的任务，即$nextTick内的函数，此时dom已更新
  */
 
  /**
