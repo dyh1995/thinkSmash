@@ -1,4 +1,4 @@
-### 使用nvm管理node版本
+### 使用nvm管理node版本 
 ### 说明：
 1. 下载nvm-setup.zip（[nvm下载地址](https://github.com/coreybutler/nvm-windows/releases/tag/1.1.7 "nvm")）
 2. 解压安装（一般安装在C:\Users\admin\AppData\Roaming\nvm）
