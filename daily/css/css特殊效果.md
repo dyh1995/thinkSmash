@@ -89,3 +89,11 @@ scale-down
 内容的尺寸与 none 或 contain 中的一个相同，取决于它们两个之间谁得到的对象尺寸会更小一些。
 
 ### object-position: left 100px
+
+### css设置字体
+`css
+@font-face{
+    font-family: 'Oswald'; 
+    src: url('../img/todist/Oswald[wght].ttf');
+}
+`
