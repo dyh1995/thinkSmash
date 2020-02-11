@@ -1,5 +1,5 @@
 //节流实现起来很好理解，设置一个bool值，在时间阀之内，根据这个bool来判断是否执行函数。
-function throttle(fn,times = 300){
+function throttle(fn,times = 300){ 
     let bool = true;
     return function(){
         if(!bool){
